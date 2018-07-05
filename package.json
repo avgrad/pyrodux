@@ -1,0 +1,19 @@
+{
+  "name": "pyrodux",
+  "version": "0.0.1-beta.1",
+  "description": "Redux actions and selectors to bind Firebase's Firestore collections and queries to your state",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/sydeslyde/pyrodux.git"
+  },
+  "author": "sydeslyde",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/sydeslyde/pyrodux/issues"
+  },
+  "homepage": "https://github.com/sydeslyde/pyrodux#readme"
+}
