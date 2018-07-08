@@ -31,7 +31,7 @@ class SignUpForm extends React.Component {
             </label>
             <br />
             <label>
-                ConfirmPassword
+                Confirm Password
                 <Field name="confirmpassword" component="input" type="password" />
             </label>
             <br />
@@ -41,5 +41,6 @@ class SignUpForm extends React.Component {
 }
 
 export default reduxForm({
-    form: "signup"
+    form: "signup",
+    validate
 })(SignUpForm);

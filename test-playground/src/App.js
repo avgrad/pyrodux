@@ -1,6 +1,7 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
+import { reducer as formReducer } from 'redux-form';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import pyrodux from 'pyrodux';
 import DemoIndex from './DemoIndex';
@@ -8,7 +9,8 @@ import LoginForm from './LoginForm';
 import SignUpForm from './SignUpForm';
 
 const rootReducer = combineReducers({
-  pyrodux: pyrodux.getReducer('pyrodux')
+  pyrodux: pyrodux.getReducer('pyrodux'),
+  form: formReducer
 });
 
 const store = createStore(rootReducer);
