@@ -5,8 +5,8 @@ import { reducer as formReducer } from 'redux-form';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import pyrodux from 'pyrodux';
 import DemoIndex from './DemoIndex';
-import LoginForm from './LoginForm';
-import SignUpForm from './SignUpForm';
+import LoginPage from './Login';
+import SignUpPage from './SignUp';
 
 const rootReducer = combineReducers({
   pyrodux: pyrodux.getReducer('pyrodux'),
@@ -29,8 +29,8 @@ class App extends React.Component {
             </nav>
             <hr />
             <Switch>
-              <Route exact path="/login" component={LoginForm} />
-              <Route exact path="/signup" component={SignUpForm} />
+              <Route exact path="/login" component={LoginPage} />
+              <Route exact path="/signup" component={SignUpPage} />
               <Route exact path="/" component={DemoIndex} />
             </Switch>
           </div>
