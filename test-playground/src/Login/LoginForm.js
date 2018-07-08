@@ -4,7 +4,8 @@ import { reduxForm, Field } from 'redux-form';
 class LoginForm extends React.Component {
     render() {
         const {
-            handleSubmit
+            handleSubmit,
+            error
         } = this.props;
         return <form onSubmit={handleSubmit}>
             <h2>Login</h2>
@@ -18,6 +19,8 @@ class LoginForm extends React.Component {
                 Password
                 <Field name="password" label="Password" component="input" type="password" />
             </label>
+            <br />
+            {error}
             <br />
             <button type="submit">Login</button>
         </form>;

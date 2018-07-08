@@ -15,7 +15,8 @@ const validate = (values) => {
 class SignUpForm extends React.Component {
     render() {
         const {
-            handleSubmit
+            handleSubmit,
+            error
         } = this.props;
         return <form onSubmit={handleSubmit}>
             <h2>SignUp</h2>
@@ -34,6 +35,8 @@ class SignUpForm extends React.Component {
                 Confirm Password
                 <Field name="confirmpassword" component="input" type="password" />
             </label>
+            <br />
+            {error}
             <br />
             <button type="submit">Sign Up</button>
         </form>;

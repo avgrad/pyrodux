@@ -1,12 +1,10 @@
-import firebase from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
+import pyrodux from 'pyrodux';
 
-const options = {
-    // TODO firebase stuff
+const config = {
+    // TODO
 };
 
-const app = firebase.initializeApp(options);
+export const app = pyrodux.initializeApp(config);
 
-const auth = firebase.auth();
-const firestore = firebase.firestore();
+export const auth = pyrodux.auth();
+export const firestore = pyrodux.firestore();

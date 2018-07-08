@@ -9,6 +9,18 @@ class Pyrodux {
   queries = {};
   stateKey = null;
 
+  initializeApp(config) {
+    return firebase.initializeApp(config);
+  }
+
+  auth() {
+    return firebase.auth();
+  }
+
+  firestore() {
+    return firebase.firestore();
+  }
+
   getFirestore() {
     if (firebase.apps.length > 0) {
       if (!firebase.firestore) throw new Error("firestore not imported");

@@ -14,6 +14,6 @@ export default connect(
         // TODO
     }),
     dispatch => ({
-        handleSubmit: (values) => actions.auth.doLoginWithEmailPassword(values.email, values.password)
+        handleSubmit: (values) => dispatch(actions.auth.doLoginWithEmailPassword(values.email, values.password))
     })
 )(LoginPage);

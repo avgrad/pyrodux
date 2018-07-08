@@ -1,23 +1,27 @@
 import React from 'react';
 import { Provider } from 'react-redux';
-import { createStore, combineReducers } from 'redux';
+import { createStore, combineReducers, applyMiddleware } from 'redux';
+import reduxThunk from 'redux-thunk';
 import { reducer as formReducer } from 'redux-form';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
-import firebase from 'firebase/app';
-import './firebase';
+import { auth as firebaseAuth } from './firebase';
 import pyrodux from 'pyrodux';
 import DemoIndex from './DemoIndex';
 import LoginPage from './Login';
 import SignUpPage from './SignUp';
+import LogoutButton from './LogoutButton';
 
 const rootReducer = combineReducers({
   pyrodux: pyrodux.getReducer('pyrodux'),
   form: formReducer
 });
 
-const store = createStore(rootReducer);
+const store = createStore(
+  rootReducer,
+  applyMiddleware(reduxThunk)
+);
 
-firebase.auth().onAuthStateChanged(pyrodux.createOnAuthChangedHandler(store));
+firebaseAuth.onAuthStateChanged(pyrodux.createOnAuthChangedHandler(store));
 
 class App extends React.Component {
   render() {
@@ -30,6 +34,7 @@ class App extends React.Component {
               <Link to="/">Index</Link>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
+              <LogoutButton />
             </nav>
             <hr />
             <Switch>
