@@ -24,7 +24,7 @@ export const isLoading = (collectionOrQueryName, state) => {
   );
 };
 
-export const hasAuthRun = state => {
+export const didAuthRun = state => {
   return !(
     typeof getPyroduxState(state).authUser === "boolean" &&
     getPyroduxState(state).authUser === false
@@ -67,6 +67,7 @@ export const userEmailVerified = state => {
 
 export default {
   isLoggedIn,
+  didAuthRun,
   userEmail,
   userDisplayName,
   userPhotoUrl,

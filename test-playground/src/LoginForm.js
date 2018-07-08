@@ -9,6 +9,17 @@ class LoginForm extends React.Component {
         return <form onSubmit={handleSubmit}>
             <h2>Login</h2>
             <hr />
+            <label>
+                E-Mail
+                <Field name="email" label="E-Mail" component="input" type="email" />
+            </label>
+            <br />
+            <label>
+                Password
+                <Field name="password" label="Password" component="input" type="password" />
+            </label>
+            <br />
+            <button type="submit">Login</button>
         </form>;
     }
 }
