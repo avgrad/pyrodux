@@ -2,10 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import selectors from 'pyrodux';
 
-class Demo extends React.Component {
+class DemoIndex extends React.Component {
     render() {
         return <div>
-            xyz
+            Index
         </div>;
     }
 }
@@ -17,4 +17,4 @@ export default connect(
     dispatch => ({
         // TODO
     })
-)(Demo);
+)(DemoIndex);

@@ -1,8 +1,11 @@
 import React from 'react';
 import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import pyrodux from 'pyrodux';
-import Demo from './Demo';
+import DemoIndex from './DemoIndex';
+import LoginForm from './LoginForm';
+import SignUpForm from './SignUpForm';
 
 const rootReducer = combineReducers({
   pyrodux: pyrodux.getReducer('pyrodux')
@@ -14,11 +17,22 @@ class App extends React.Component {
   render() {
     return (
       <Provider store={store}>
-        <div className="App">
-          <h1>pyrodux test playground application</h1>
-          <hr />
-          <Demo />
-        </div>
+        <BrowserRouter>
+          <div>
+            <h1>pyrodux test playground application</h1>
+            <nav>
+              <Link to="/">Index</Link>
+              <Link to="/login">Login</Link>
+              <Link to="/signup">Sign Up</Link>
+            </nav>
+            <hr />
+            <Switch>
+              <Route exact path="/login" component={LoginForm} />
+              <Route exact path="/signup" component={SignUpForm} />
+              <Route exact path="/" component={DemoIndex} />
+            </Switch>
+          </div>
+        </BrowserRouter>
       </Provider>
     );
   }

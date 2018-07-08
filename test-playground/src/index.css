@@ -4,3 +4,7 @@ body {
   font-family: "Consolas", "Courier New", monospace;
   text-align: center;
 }
+
+nav a {
+  margin-right: 12px;
+}
