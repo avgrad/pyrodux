@@ -9,9 +9,9 @@
     "release": "npm publish build",
     "prepublishOnly": "npm run build",
     "dev-init": "npm install && npm run playground:install && npm run playground:installsymlink",
-    "playground:install": "npm --prefix ./test-playground install",
-    "playground:installsymlink": "npm --prefix ./test-playground install ./",
-    "playground:start": "npm --prefix ./test-playground start",
+    "playground:install": "npm --prefix ./../pyrodux-test-playground install",
+    "playground:installsymlink": "npm --prefix ./../pyrodux-test-playground install ./",
+    "playground:start": "npm --prefix ./../pyrodux-test-playground start",
     "dev-playground": "concurrently \"npm:watch\" \"npm:playground:start\""
   },
   "repository": {
