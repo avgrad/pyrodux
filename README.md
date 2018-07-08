@@ -21,9 +21,7 @@ It helps you to focus on the main parts of you app instead of data-handling the 
 - `build` -> build to `./build`
 - `watch` -> watch for file changes, and build to `./build`
 - `release` -> `npm publish build`
-- `dev-init` -> install package dependencies, and install playground dependencies, and create playground symlink to local pyrodux library (development)
-- `playground:install` -> install playground dependencies
-- `playground:installsymlink` -> install playground symlink to local pyrodux library (development)
+- `dev-init` -> install pyrodux dependencies, and install playground dependencies
 - `playground:start` -> run playground app locally
 - `dev-playground` -> watch for file changes to build pyrodux, and run playground locally
 
