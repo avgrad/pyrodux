@@ -1,6 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import selectors from 'pyrodux/build/selectors'; // when instaled from npm should be pyrodux/selectors, because only build will be published
+import { selectors } from 'pyrodux';
 
 class DemoIndex extends React.Component {
     render() {

@@ -64,17 +64,3 @@ export const userEmailVerified = state => {
     ? getPyroduxState(state).emailVerified
     : false;
 };
-
-export default {
-  isLoggedIn,
-  didAuthRun,
-  userEmail,
-  userDisplayName,
-  userPhotoUrl,
-  userId,
-  userEmailVerified,
-  isLoading,
-  asObject,
-  asArray
-  // TODO
-};
