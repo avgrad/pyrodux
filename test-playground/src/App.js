@@ -3,6 +3,8 @@ import { Provider } from 'react-redux';
 import { createStore, combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
+import firebase from 'firebase/app';
+import './firebase';
 import pyrodux from 'pyrodux';
 import DemoIndex from './DemoIndex';
 import LoginPage from './Login';
@@ -14,6 +16,8 @@ const rootReducer = combineReducers({
 });
 
 const store = createStore(rootReducer);
+
+firebase.auth().onAuthStateChanged(pyrodux.createOnAuthChangedHandler(store));
 
 class App extends React.Component {
   render() {
