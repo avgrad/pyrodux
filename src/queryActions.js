@@ -9,7 +9,7 @@ import internalActions from "./internalActions";
 const getQueryAsCollection = collectionOrQueryName => {
   const firestore = pyrodux.getFirestore();
   const query = pyrodux.queries[collectionOrQueryName];
-  if (!!query) {
+  if (!query) {
     throw new Error("query with name " + collectionOrQueryName + " not found");
   }
 
@@ -28,8 +28,8 @@ const getQueryAsCollection = collectionOrQueryName => {
 
 const isQueryNameKnown = (collectionOrQueryName, state) => {
   return (
-    collectionOrQueryName in state.entities.loading ||
-    collectionOrQueryName in state.entities.data
+    collectionOrQueryName in state[pyrodux.stateKey].loading ||
+    collectionOrQueryName in state[pyrodux.stateKey].data
   );
 };
 
@@ -72,7 +72,7 @@ const retrieveMoreForQuery = (
     });
 };
 
-export const retrieveCollection = collectionName => dispatch => {
+export const retrieveCollection = collectionName => {
   const firestore = pyrodux.getFirestore();
   const query = firestore.collection(collectionName);
   return retrieveQuery(collectionName, query);
@@ -100,6 +100,11 @@ export const addItem = (collectionOrQueryName, data) => dispatch => {
         id: docRef.id
       };
     })
+    .then(item => {
+      // TODO how to know if collectionOrQuery was subscribed or just retrieved?
+      // subscriptions dont need to be updated by pyrodux, because snapshot handling will do it
+      dispatch(internalActions.setDocumentData(collectionOrQueryName, item.id, item));
+    })
     .catch(err => {
       throw new SubmissionError(err.message);
     });
@@ -117,6 +122,11 @@ export const updateItem = (collectionOrQueryName, id, data) => dispatch => {
         ...data,
         id
       };
+    })
+    .then(item => {
+      // TODO how to know if collectionOrQuery was subscribed or just retrieved?
+      // subscriptions dont need to be updated by pyrodux, because snapshot handling will do it
+      dispatch(internalActions.setDocumentData(collectionOrQueryName, item.id, item));
     })
     .catch(err => {
       throw new SubmissionError(err.message);

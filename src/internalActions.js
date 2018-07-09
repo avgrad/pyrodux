@@ -16,16 +16,16 @@ export const patchQueryData = (
   data
 });
 
-// TODO export, implement in reducer
-const setDocumentData = (
+export const setDocumentData = (
   collectionOrQueryName,
   id,
   data
 ) => ({
-  type: "@pyrodux_SET_DOCUMENT_DATA",
+  type: "@pyrodux_PATCH_QUERY_DATA",
   collectionOrQueryName,
-  id,
-  data
+  data: {
+    [id]: data
+  }
 });
 
 export const setLoading = (

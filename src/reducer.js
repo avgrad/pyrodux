@@ -1,9 +1,9 @@
 const initialState = {
   loading: {
-    collectionOrQueryName: true
+    //collectionOrQueryName: true
   },
   data: {
-    collectionOrQueryName: { some: "data", from: "firebase" }
+    //collectionOrQueryName: { some: "data", from: "firebase" }
   },
   authUser: false // false to be able to differentiate it from object to know if auth has run
 };
