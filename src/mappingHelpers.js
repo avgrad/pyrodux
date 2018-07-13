@@ -1,4 +1,4 @@
-import firebase from "firebase/app";
+import pyrodux from 'pyrodux';
 
 export const mapFirestoreSnapshotToJsObject = querySnapshot => {
   if (querySnapshot.docs)
@@ -46,7 +46,7 @@ export const mapJsObjectToFirestoreDocument = data => {
   Object.keys(fsData).forEach(k => {
     if (fsData["__pyrodux__docref__" + k] === true) {
       delete fsData["__pyrodux__docref__" + k];
-      const docRef = firebase.firestore().ref(fsData[k]);
+      const docRef = pyrodux.firestore().doc(fsData[k]);
       fsData[k] = docRef;
       // TODO also handle timestamps etc
     }

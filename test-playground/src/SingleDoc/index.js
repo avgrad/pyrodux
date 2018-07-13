@@ -15,7 +15,6 @@ class SingleDocPage extends React.Component {
     }
 
     render() {
-        console.log(this.props.initialValues);
         return <div>
             <p>
                 isLoading: {this.props.isLoading.toString()}
@@ -34,7 +33,7 @@ export default connect(
     }),
     dispatch => ({
         loadData: () => dispatch(actions.data.retrieveQuery("singleDoc", singleDocQuery)),
-        handleSubmit: (values) => console.log(values),
+        handleSubmit: (values) => dispatch(actions.data.updateItemDoc("singleDoc", values)),
         unloadData: () => dispatch(actions.data.unloadCollectionOrQuery("singleDoc"))
     })
 )(SingleDocPage);

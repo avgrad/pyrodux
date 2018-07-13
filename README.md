@@ -174,6 +174,7 @@ const mapDispatchToProps = dispatch => ({
   retrieveQueryData: () => dispatch(actions.data.retrieveQuery("queryName", exampleFirestoreQuery)),
   addItem: (values) => dispatch(actions.data.addItem("collectionOrQueryName", values)),
   updateItem: (values) => dispatch(actions.data.updateItem("collectionOrQueryName", values)),
+  updateItemWhichIsDocRef: (values) => dispatch(actions.data.updateItemDoc("collectionOrQueryName", values)),
   deleteItem: (id) => dispatch(actions.data.deleteItem("collectionOrQueryname", id))
 });
 ```
@@ -216,9 +217,9 @@ But I am thinking about this and hopefully support will come soon.
   - example: load tracked entries by month, click "prev month", it will load data from prev month into state *additionaly*
   - rough idea is implemented, but i dont know if it works like i intend
   - and how could this be done with subscriptions????? because you cant "edit" a subscribed query
+  - only accept collectionreference and documentreference, and use supplied "callback"-style filter function??
 - does general firestore to object mapping work?
 - put docRef / collectionRef in state?
 - create/update/delete callbacks? (in Pyrodux index class, or params to dispatches?)
   - supply redux-actions to pyrodux-action which will be dispatched?
 - implement subscribe to collection changes (just as function? or also as redux-thunk action?
-- single document queries `firestore.collection("some_collection").doc("abcdefgh")`
