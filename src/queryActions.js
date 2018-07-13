@@ -132,3 +132,11 @@ export const deleteItem = (collectionOrQueryName, id) => dispatch => {
   const query = getQueryAsCollection(collectionOrQueryName);
   return query.doc(id).delete();
 };
+
+export const unloadCollectionOrQuery = (collectionOrQueryName) => dispatch => {
+  pyrodux.unregisterQuery(collectionOrQueryName);
+  dispatch({
+    type: "@pyrodux_UNLOAD_QUERY",
+    collectionOrQueryName
+  });
+};

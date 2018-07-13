@@ -9,6 +9,7 @@ import pyrodux from 'pyrodux';
 import DemoIndex from './DemoIndex';
 import LoginPage from './Login';
 import SignUpPage from './SignUp';
+import SingleDocPage from './SingleDoc';
 import LogoutButton from './LogoutButton';
 
 const rootReducer = combineReducers({
@@ -32,6 +33,8 @@ class App extends React.Component {
             <h1>pyrodux test playground application</h1>
             <nav>
               <Link to="/">Index</Link>
+              <Link to="/singledoc">Single Doc</Link>
+              <span>||| </span>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
               <LogoutButton />
@@ -40,6 +43,7 @@ class App extends React.Component {
             <Switch>
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/signup" component={SignUpPage} />
+              <Route exact path="/singledoc" component={SingleDocPage} />
               <Route exact path="/" component={DemoIndex} />
             </Switch>
           </div>

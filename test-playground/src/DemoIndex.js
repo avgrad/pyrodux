@@ -5,13 +5,12 @@ import { selectors, actions } from 'pyrodux';
 import MessageSender from './MessageSender';
 
 class DemoIndex extends React.Component {
-    state = { loadDidRun : false };
     componentDidMount() {
-        if (this.state.loadDidRun)
-            return;
-
         this.props.loadMessages();
-        this.setState({ loadDidRun: true });
+    }
+
+    componentWillUnmount() {
+        this.props.unloadMessages();
     }
 
     render() {
@@ -41,9 +40,10 @@ export default connect(
         didAuthRun: selectors.didAuthRun(state),
         userMail: selectors.userEmail(state, "(user is not logged in)"),
         messages: selectors.asArray("messages", state),
-        messagesLoading: selectors.isLoading("messages", state)
+        messagesLoading: selectors.isLoading("messages", state),
     }),
     dispatch => ({
-        loadMessages: () => dispatch(actions.data.retrieveCollection("messages"))
+        loadMessages: () => dispatch(actions.data.retrieveCollection("messages")),
+        unloadMessages: () => dispatch(actions.data.unloadCollectionOrQuery("messages"))
     })
 )(DemoIndex);

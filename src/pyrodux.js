@@ -56,6 +56,10 @@ class Pyrodux {
     this.queries[queryName] = query;
   }
 
+  unregisterQuery(queryName) {
+    delete this.queries[queryName];
+  }
+
   onErrorRethrowAction = null;
   onErrorRethrow(callback) {
     this.onErrorRethrowAction = callback.bind(this);

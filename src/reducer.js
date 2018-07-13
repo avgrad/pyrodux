@@ -44,6 +44,17 @@ const reducer = (state = initialState, action) => {
         ...state,
         authUser: action.authUser
       };
+    case "@pyrodux_UNLOAD_QUERY":
+      const newData = { ...state.data };
+      delete newData[action.collectionOrQueryName];
+      const newLoading = { ...state.loading };
+      delete newLoading[action.collectionOrQueryName];
+
+      return {
+        ...state,
+        loading: newLoading,
+        data: newData
+      };
     default:
       return state;
   }
