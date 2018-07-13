@@ -1,4 +1,3 @@
-import { SubmissionError } from "redux-form"; // make SubmissionError import conditional? via other file with exports conditionally if module found?
 import pyrodux from "./";
 import {
   mapFirestoreSnapshotToJsObject,
@@ -105,9 +104,7 @@ export const addItem = (collectionOrQueryName, data) => dispatch => {
       // subscriptions dont need to be updated by pyrodux, because snapshot handling will do it
       dispatch(internalActions.setDocumentData(collectionOrQueryName, item.id, item));
     })
-    .catch(err => {
-      throw new SubmissionError(err.message);
-    });
+    .catch(err => pyrodux.tryRethrowError(err));
 };
 
 export const updateItem = (collectionOrQueryName, id, data) => dispatch => {
@@ -128,9 +125,7 @@ export const updateItem = (collectionOrQueryName, id, data) => dispatch => {
       // subscriptions dont need to be updated by pyrodux, because snapshot handling will do it
       dispatch(internalActions.setDocumentData(collectionOrQueryName, item.id, item));
     })
-    .catch(err => {
-      throw new SubmissionError(err.message);
-    });
+    .catch(err => pyrodux.tryRethrowError(err));
 };
 
 export const deleteItem = (collectionOrQueryName, id) => dispatch => {

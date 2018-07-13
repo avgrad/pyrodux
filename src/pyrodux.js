@@ -56,6 +56,17 @@ class Pyrodux {
     this.queries[queryName] = query;
   }
 
+  onErrorRethrowAction = null;
+  onErrorRethrow(callback) {
+    this.onErrorRethrowAction = callback.bind(this);
+  }
+
+  tryRethrowError(err) {
+    if (typeof this.onErrorRethrowAction === "function") {
+      this.onErrorRethrowAction(err);
+    }
+  }
+
   // TODO register onSuccess/onError handlers here for all add/edit/delete actions?
 }
 

@@ -1,4 +1,3 @@
-import { SubmissionError } from "redux-form"; // make SubmissionError import conditional? via other file with exports conditionally if module found?
 import pyrodux from "./";
 import {
   mapFirestoreSnapshotToJsObject,
@@ -15,9 +14,7 @@ export const doLoginWithEmailPassword = (email, password) => dispatch => {
   return auth
     .signInWithEmailAndPassword(email, password)
     .then(authUser => dispatch(internalActions.setAuthUser(authUser)))
-    .catch(err => {
-      throw new SubmissionError(err.message);
-    });
+    .catch(err => pyrodux.tryRethrowError(err));
 };
 
 export const doLogout = () => dispatch => {
@@ -31,9 +28,7 @@ export const doLogout = () => dispatch => {
  */
 export const doSignUpWithEmailPassword = (email, password) => dispatch => {
   const auth = pyrodux.getAuth();
-  return auth.createUserWithEmailAndPassword(email, password).catch(err => {
-    throw new SubmissionError(err.message);
-  });
+  return auth.createUserWithEmailAndPassword(email, password).catch(err => pyrodux.tryRethrowError(err));
 };
 
 /**
@@ -56,7 +51,8 @@ const doSendPasswordResetEmail = (
       if (typeof successCallback === "function") successCallback();
     })
     .catch(err => {
-      if (typeof errorCallback === "function") errorCallback(err.message);
+      if (typeof errorCallback === "function") errorCallback(err.message); // TODO keep this??
+      pyrodux.tryRethrowError(err);
     });
 };
 
@@ -67,9 +63,7 @@ const doSendPasswordResetEmail = (
 const doConfirmPasswordResetEmail = (code, newPassword) => dispatch => {
   // TODO export
   const auth = pyrodux.getAuth();
-  auth.confirmPasswordReset(code, newPassword).catch(err => {
-    throw new SubmissionError(err.message);
-  });
+  auth.confirmPasswordReset(code, newPassword).catch(err => pyrodux.tryRethrowError(err));
 };
 
 const updateUserProfile = (displayName, photoURL) => dispatch => {
