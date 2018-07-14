@@ -10,8 +10,8 @@
     "prepublishOnly": "npm run build",
     "dev-init": "npm install && npm --prefix ./test-playground install",
     "playground:start": "npm --prefix ./test-playground start",
-    "dev-playground": "concurrently \"npm:watch\" \"npm:playground:start\"",
-    "lint": "eslint src"
+    "dev-playground": "concurrently \"npm:watch\" \"npm:lint\" \"npm:playground:start\"",
+    "lint": "esw --watch --fix src"
   },
   "repository": {
     "type": "git",
@@ -42,6 +42,9 @@
     "eslint-plugin-flowtype": "^2.50.0",
     "eslint-plugin-import": "^2.13.0",
     "eslint-plugin-jsx-a11y": "^6.1.1",
-    "eslint-plugin-react": "^7.10.0"
+    "eslint-plugin-prettier": "^2.6.2",
+    "eslint-plugin-react": "^7.10.0",
+    "eslint-watch": "^4.0.1",
+    "prettier": "^1.13.7"
   }
 }

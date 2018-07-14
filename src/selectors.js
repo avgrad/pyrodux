@@ -1,4 +1,4 @@
-import pyrodux from "./";
+import pyrodux from './';
 
 const getPyroduxState = state => {
   return state[pyrodux.stateKey];
@@ -26,7 +26,7 @@ export const isLoading = (collectionOrQueryName, state) => {
 
 export const didAuthRun = state => {
   return !(
-    typeof getPyroduxState(state).authUser === "boolean" &&
+    typeof getPyroduxState(state).authUser === 'boolean' &&
     getPyroduxState(state).authUser === false
   );
 };

@@ -11,7 +11,7 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   //console.log("pyrodux reducer incoming action:", action);
   switch (action.type) {
-    case "@pyrodux_SET_LOADING":
+    case '@pyrodux_SET_LOADING':
       return {
         ...state,
         loading: {
@@ -19,7 +19,7 @@ const reducer = (state = initialState, action) => {
           [action.collectionOrQueryName]: action.isLoading === true
         }
       };
-    case "@pyrodux_RECEIVE_QUERY_DATA":
+    case '@pyrodux_RECEIVE_QUERY_DATA':
       //console.log("received query data", action.collectionOrQueryName, action.data);
       return {
         ...state,
@@ -28,7 +28,7 @@ const reducer = (state = initialState, action) => {
           [action.collectionOrQueryName]: action.data
         }
       };
-    case "@pyrodux_PATCH_QUERY_DATA":
+    case '@pyrodux_PATCH_QUERY_DATA':
       return {
         ...state,
         data: {
@@ -39,12 +39,12 @@ const reducer = (state = initialState, action) => {
           }
         }
       };
-    case "@pyrodux_SET_AUTH_USER":
+    case '@pyrodux_SET_AUTH_USER':
       return {
         ...state,
         authUser: action.authUser
       };
-    case "@pyrodux_UNLOAD_QUERY":
+    case '@pyrodux_UNLOAD_QUERY':
       const newData = { ...state.data };
       delete newData[action.collectionOrQueryName];
       const newLoading = { ...state.loading };

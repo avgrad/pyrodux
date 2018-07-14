@@ -1,9 +1,5 @@
-import pyrodux from "./";
-import {
-  mapFirestoreSnapshotToJsObject,
-  mapJsObjectToFirestoreDocument
-} from "./mappingHelpers";
-import internalActions from "./internalActions";
+import pyrodux from './';
+import internalActions from './internalActions';
 
 /**
  * @param {string} email - E-Mail address to log in.
@@ -28,7 +24,9 @@ export const doLogout = () => dispatch => {
  */
 export const doSignUpWithEmailPassword = (email, password) => dispatch => {
   const auth = pyrodux.getAuth();
-  return auth.createUserWithEmailAndPassword(email, password).catch(err => pyrodux.tryRethrowError(err));
+  return auth
+    .createUserWithEmailAndPassword(email, password)
+    .catch(err => pyrodux.tryRethrowError(err));
 };
 
 /**
@@ -48,10 +46,10 @@ const doSendPasswordResetEmail = (
   return auth
     .sendPasswordResetEmail(email, actionCodeSettings)
     .then(() => {
-      if (typeof successCallback === "function") successCallback();
+      if (typeof successCallback === 'function') successCallback();
     })
     .catch(err => {
-      if (typeof errorCallback === "function") errorCallback(err.message); // TODO keep this??
+      if (typeof errorCallback === 'function') errorCallback(err.message); // TODO keep this??
       pyrodux.tryRethrowError(err);
     });
 };
@@ -63,7 +61,9 @@ const doSendPasswordResetEmail = (
 const doConfirmPasswordResetEmail = (code, newPassword) => dispatch => {
   // TODO export
   const auth = pyrodux.getAuth();
-  auth.confirmPasswordReset(code, newPassword).catch(err => pyrodux.tryRethrowError(err));
+  auth
+    .confirmPasswordReset(code, newPassword)
+    .catch(err => pyrodux.tryRethrowError(err));
 };
 
 const updateUserProfile = (displayName, photoURL) => dispatch => {

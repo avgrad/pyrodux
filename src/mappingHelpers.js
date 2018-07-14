@@ -16,7 +16,7 @@ export const mapFirestoreCollectionSnapshotToJsObject = querySnapshot => {
 
 export const mapFirestoreDocumentSnapshotToJsObject = docSnapshot => {
   const fsData = docSnapshot.data();
-  if ("id" in fsData)
+  if ('id' in fsData)
     throw new Error("original firestore data already contains 'id' -Property");
   const resultData = {
     id: docSnapshot.id, // put id in doc-data
@@ -24,13 +24,13 @@ export const mapFirestoreDocumentSnapshotToJsObject = docSnapshot => {
   };
   // handle documentreferences to extract ids
   Object.keys(resultData).forEach(k => {
-    if (resultData[k].constructor.name === "DocumentReference") {
+    if (resultData[k].constructor.name === 'DocumentReference') {
       //console.log(k + " is a document reference");
       // k is the name of a document reference
       // TODO better registering the reference
       // for now just map it to the document path and "register" it by a "meta"-property
       resultData[k] = resultData[k].path;
-      resultData["__pyrodux__docref__" + k] = true;
+      resultData['__pyrodux__docref__' + k] = true;
       // TODO also handle timestamps etc
     }
   });
@@ -44,8 +44,8 @@ export const mapJsObjectToFirestoreDocument = data => {
   const fsData = { ...data };
   delete fsData.id;
   Object.keys(fsData).forEach(k => {
-    if (fsData["__pyrodux__docref__" + k] === true) {
-      delete fsData["__pyrodux__docref__" + k];
+    if (fsData['__pyrodux__docref__' + k] === true) {
+      delete fsData['__pyrodux__docref__' + k];
       const docRef = pyrodux.firestore().doc(fsData[k]);
       fsData[k] = docRef;
       // TODO also handle timestamps etc
@@ -81,7 +81,7 @@ export const deepCloneConvert = (obj, propValidationChangeFunction) => {
       if (deleteKeys.includes(propKey)) return;
     }
 
-    if (typeof propVal === "object") {
+    if (typeof propVal === 'object') {
       // object
       clone[propKey] = deepCloneConvert(propVal, propValidationChangeFunction);
     } else if (Array.isArray(propVal)) {
@@ -104,10 +104,10 @@ export const deepCloneConvert = (obj, propValidationChangeFunction) => {
 const samplePropValidationChangeFunction = (propVal, propKey, allKeys) => {
   return {
     add: {
-      thiswill: "be spreaded",
-      accrossthe: "cloneObj"
+      thiswill: 'be spreaded',
+      accrossthe: 'cloneObj'
     },
-    delete: ["these", "keys", "deleted"],
+    delete: ['these', 'keys', 'deleted'],
     value: propVal
   };
 };
