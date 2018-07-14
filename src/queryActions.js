@@ -42,10 +42,7 @@ const getQueryAsCollection = collectionOrQueryName => {
 };
 
 const isQueryNameKnown = (collectionOrQueryName, state) => {
-  return (
-    collectionOrQueryName in state[pyrodux.stateKey].loading ||
-    collectionOrQueryName in state[pyrodux.stateKey].data
-  );
+  return collectionOrQueryName in state[pyrodux.stateKey].queries;
 };
 
 export const retrieveQuery = (queryName, query) => (dispatch, getState) => {

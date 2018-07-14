@@ -4,24 +4,29 @@ const getPyroduxState = state => {
   return state[pyrodux.stateKey];
 };
 
+const getQueryState = (collectionOrQueryName, state) => {
+  const queryState = getPyroduxState(state).queries[collectionOrQueryName];
+  return queryState;
+};
+
 export const asObject = (collectionOrQueryName, state) => {
-  const data = getPyroduxState(state).data[collectionOrQueryName];
-  if (!!data) return data;
-  else return {};
+  const queryState = getQueryState(collectionOrQueryName, state);
+  if (!queryState) return {};
+  const data = queryState.data;
+  if (!data) return {};
+  return data;
 };
 
 export const asArray = (collectionOrQueryName, state) => {
   const data = asObject(collectionOrQueryName, state);
-  if (!!data) return Object.values(asObject(collectionOrQueryName, state));
-  else return [];
+  if (!data) return [];
+  return Object.values(data);
 };
 
 export const isLoading = (collectionOrQueryName, state) => {
-  return (
-    Object.keys(getPyroduxState(state).loading).includes(
-      collectionOrQueryName
-    ) && getPyroduxState(state).loading[collectionOrQueryName] === true
-  );
+  const queryState = getQueryState(collectionOrQueryName, state);
+  if (!queryState) return false;
+  return queryState.loading;
 };
 
 export const didAuthRun = state => {
