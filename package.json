@@ -10,7 +10,8 @@
     "prepublishOnly": "npm run build",
     "dev-init": "npm install && npm --prefix ./test-playground install",
     "playground:start": "npm --prefix ./test-playground start",
-    "dev-playground": "concurrently \"npm:watch\" \"npm:playground:start\""
+    "dev-playground": "concurrently \"npm:watch\" \"npm:playground:start\"",
+    "lint": "eslint src"
   },
   "repository": {
     "type": "git",
@@ -32,8 +33,15 @@
   },
   "devDependencies": {
     "babel-cli": "^6.26.0",
+    "babel-eslint": "^8.2.6",
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
-    "concurrently": "^3.6.0"
+    "concurrently": "^3.6.0",
+    "eslint": "^5.1.0",
+    "eslint-config-react-app": "^2.1.0",
+    "eslint-plugin-flowtype": "^2.50.0",
+    "eslint-plugin-import": "^2.13.0",
+    "eslint-plugin-jsx-a11y": "^6.1.1",
+    "eslint-plugin-react": "^7.10.0"
   }
 }
