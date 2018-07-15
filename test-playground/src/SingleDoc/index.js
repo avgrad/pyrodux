@@ -16,6 +16,8 @@ class SingleDocPage extends React.Component {
 
     render() {
         return <div>
+            <h2>Single Document Query</h2>
+            <hr />
             <p>
                 isLoading: {this.props.isLoading.toString()}
             </p>

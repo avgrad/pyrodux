@@ -11,6 +11,7 @@ import LoginPage from './Login';
 import SignUpPage from './SignUp';
 import SingleDocPage from './SingleDoc';
 import LogoutButton from './LogoutButton';
+import UserState from './UserState';
 
 const rootReducer = combineReducers({
   pyrodux: pyrodux.getReducer('pyrodux'),
@@ -39,6 +40,7 @@ class App extends React.Component {
               <Link to="/signup">Sign Up</Link>
               <LogoutButton />
             </nav>
+            <UserState />
             <hr />
             <Switch>
               <Route exact path="/login" component={LoginPage} />

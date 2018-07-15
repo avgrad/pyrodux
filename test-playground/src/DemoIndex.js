@@ -17,11 +17,6 @@ class DemoIndex extends React.Component {
         return <div>
             <h2>Index</h2>
             <hr />
-            <p>is User Logged in? -> {this.props.loggedIn.toString()}</p>
-            <p>did auth run? -> {this.props.didAuthRun.toString()}</p>
-            <p>user email? -> {this.props.userMail}</p>
-            <hr />
-            
             Messages (loading: {this.props.messagesLoading.toString()})
             <ul>
                 {this.props.messages.map((m,i) =>
@@ -38,9 +33,6 @@ class DemoIndex extends React.Component {
 
 export default connect(
     state => ({
-        loggedIn: selectors.isLoggedIn(state),
-        didAuthRun: selectors.didAuthRun(state),
-        userMail: selectors.userEmail(state, "(user is not logged in)"),
         messages: selectors.asArray("messages", state),
         messagesLoading: selectors.isLoading("messages", state),
     }),
