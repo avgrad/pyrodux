@@ -14,7 +14,10 @@
 //     }
 //     //...otherQueries
 //   },
-//   authUser: false // initially false, to be able to differentiate it from object null to know if auth has run
+//   auth: {
+//     didAuthRun: false // initially false, to be able to differentiate it from object null to know if auth has run
+//     uid, email, ...
+//   }
 // };
 
 const initialState_Query = {
@@ -82,13 +85,26 @@ const dataReducer = (state = initialState_Data, action) => {
   }
 };
 
-const initialState_Auth = false;
+const initialState_Auth = {
+  didAuthRun: false
+};
 
 const authReducer = (state = initialState_Auth, action) => {
   // auth level // state.pyrodux.auth
   switch (action.type) {
     case '@pyrodux_SET_AUTH_USER':
-      return action.authUser;
+      if (!!action.authUser)
+        return {
+          didAuthRun: true,
+          uid: action.authUser.uid,
+          email: action.authUser.email,
+          displayName: action.authUser.displayName,
+          photoUrl: action.authUser.photoURL,
+          emailVerified: action.authUser.emailVerified
+        };
+      return {
+        didAuthRun: true
+      };
     default:
       return state;
   }
@@ -97,7 +113,7 @@ const authReducer = (state = initialState_Auth, action) => {
 const reducer = (state = {}, action) => {
   return {
     queries: dataReducer(state.queries, action),
-    authUser: authReducer(state.authUser, action)
+    auth: authReducer(state.auth, action)
   };
 };
 

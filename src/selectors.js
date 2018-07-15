@@ -30,42 +30,39 @@ export const isLoading = (collectionOrQueryName, state) => {
 };
 
 export const didAuthRun = state => {
-  return !(
-    typeof getPyroduxState(state).authUser === 'boolean' &&
-    getPyroduxState(state).authUser === false
-  );
+  return getPyroduxState(state).auth.didAuthRun;
 };
 
 export const isLoggedIn = state => {
-  return !!getPyroduxState(state).authUser;
+  return !!getPyroduxState(state).auth.uid;
 };
 
 export const userEmail = (state, notLoggedInValue) => {
-  return getPyroduxState(state).authUser
-    ? getPyroduxState(state).authUser.email
+  return getPyroduxState(state).auth
+    ? getPyroduxState(state).auth.email
     : notLoggedInValue;
 };
 
 export const userDisplayName = (state, notLoggedInValue) => {
-  return getPyroduxState(state).authUser
-    ? getPyroduxState(state).authUser.displayName
+  return getPyroduxState(state).auth
+    ? getPyroduxState(state).auth.displayName
     : notLoggedInValue;
 };
 
 export const userPhotoUrl = (state, notLoggedInValue) => {
-  return getPyroduxState(state).authUser
-    ? getPyroduxState(state).authUser.photoURL
+  return getPyroduxState(state).auth
+    ? getPyroduxState(state).auth.photoURL
     : notLoggedInValue;
 };
 
 export const userId = (state, notLoggedInValue) => {
-  return getPyroduxState(state).authUser
-    ? getPyroduxState(state).authUser.uid
+  return getPyroduxState(state).auth
+    ? getPyroduxState(state).auth.uid
     : notLoggedInValue;
 };
 
 export const userEmailVerified = state => {
-  return getPyroduxState(state).authUser
-    ? getPyroduxState(state).emailVerified
+  return getPyroduxState(state).auth
+    ? getPyroduxState(state).auth.emailVerified
     : false;
 };
