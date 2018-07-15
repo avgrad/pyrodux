@@ -1,5 +1,9 @@
 import pyrodux from 'pyrodux';
 
+export const mapFirestoreDocumentChangeToJsObject = documentChange => {
+  return mapFirestoreDocumentSnapshotToJsObject(documentChange.doc);
+};
+
 export const mapFirestoreSnapshotToJsObject = querySnapshot => {
   if (querySnapshot.docs)
     return mapFirestoreCollectionSnapshotToJsObject(querySnapshot);

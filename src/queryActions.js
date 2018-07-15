@@ -1,7 +1,9 @@
 import pyrodux from './';
 import {
+  mapCollectionArrayToObject,
   mapFirestoreSnapshotToJsObject,
-  mapJsObjectToFirestoreDocument
+  mapJsObjectToFirestoreDocument,
+  mapFirestoreDocumentChangeToJsObject
 } from './mappingHelpers';
 import { determineQueryType } from './helpers';
 import { getQueryState } from './selectorHelpers';
@@ -40,8 +42,6 @@ export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
   dispatch(internalActions.registerQuery(queryName, query));
   dispatch(internalActions.setLoading(queryName, true));
 
-  //console.log("query", query);
-  //console.log("queryid", query._query.toString());
   return query
     .get()
     .then(mapFirestoreSnapshotToJsObject)
@@ -81,14 +81,41 @@ export const retrieveCollection = collectionName => {
   return retrieveQuery(collectionName, query);
 };
 
-export const subscribeQuery = (queryName, query) => dispatch => {
-  throw new Error('not implemented yet', subscribeQuery);
-  // TODO
+export const subscribeQuery = (queryName, query) => (dispatch, getState) => {
+  if (isQueryNameKnown(queryName, getState())) {
+    throw new Error('a query with this name is already registered', queryName);
+  }
+
+  dispatch(internalActions.registerQuery(queryName, query));
+  dispatch(internalActions.setLoading(queryName, true));
+
+  const unsubscribe = query.onSnapshot(querySnapshot => {
+    // TODO how to handle single-document-queries?
+    const dataAddedOrChanged = mapCollectionArrayToObject(
+      querySnapshot
+        .docChanges() // added modified removed
+        .filter(
+          documentChange =>
+            documentChange.type === 'added' ||
+            documentChange.type === 'modified'
+        )
+        .map(mapFirestoreDocumentChangeToJsObject)
+    );
+    // TODO adds/changes will be pushed to state twice (also in add().then() and update().then())
+    // or is it okay to create patch-action twice?
+    // TODO handle remove here? (will remove from local state because of delete().then())
+
+    dispatch(internalActions.patchQueryData(queryName, dataAddedOrChanged));
+    dispatch(internalActions.setLoading(queryName, false));
+  });
+
+  // TODO what to do with unsubscribe function?
 };
 
-export const subscribeCollection = collectionName => dispatch => {
-  throw new Error('not implemented yet', subscribeCollection);
-  // TODO
+export const subscribeCollection = collectionName => {
+  const firestore = pyrodux.getFirestore();
+  const query = firestore.collection(collectionName);
+  return subscribeQuery(collectionName, query);
 };
 
 export const addItem = (collectionOrQueryName, data) => (
@@ -107,8 +134,6 @@ export const addItem = (collectionOrQueryName, data) => (
       };
     })
     .then(item => {
-      // TODO how to know if collectionOrQuery was subscribed or just retrieved?
-      // subscriptions dont need to be updated by pyrodux, because snapshot handling will do it
       dispatch(
         internalActions.setDocumentData(collectionOrQueryName, item.id, item)
       );
@@ -133,8 +158,6 @@ export const updateItem = (collectionOrQueryName, id, data) => (
       };
     })
     .then(item => {
-      // TODO how to know if collectionOrQuery was subscribed or just retrieved?
-      // subscriptions dont need to be updated by pyrodux, because snapshot handling will do it
       dispatch(
         internalActions.setDocumentData(collectionOrQueryName, item.id, item)
       );

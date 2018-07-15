@@ -7,6 +7,7 @@ import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 import { auth as firebaseAuth } from './firebase';
 import pyrodux from 'pyrodux';
 import DemoIndex from './DemoIndex';
+import DemoSubscribe from './DemoSubscribe';
 import LoginPage from './Login';
 import SignUpPage from './SignUp';
 import SingleDocPage from './SingleDoc';
@@ -35,6 +36,7 @@ class App extends React.Component {
             <nav>
               <Link to="/">Index</Link>
               <Link to="/singledoc">Single Doc</Link>
+              <Link to="/subscribe">Subscribe Collection</Link>
               <span>||| </span>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
@@ -46,6 +48,7 @@ class App extends React.Component {
               <Route exact path="/login" component={LoginPage} />
               <Route exact path="/signup" component={SignUpPage} />
               <Route exact path="/singledoc" component={SingleDocPage} />
+              <Route exact path="/subscribe" component={DemoSubscribe} />
               <Route exact path="/" component={DemoIndex} />
             </Switch>
           </div>

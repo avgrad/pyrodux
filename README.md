@@ -21,7 +21,7 @@ It helps you to focus on the main parts of you app instead of data-handling the 
 ## What can it do?
 
 - Authentication with E-Mail and Password (Login, Logout, Signup)
-- retrieve data from collections and custom queries
+- retrieve data from collections and custom queries (also subscribe for changes)
 - add/update/delete data from collections and custom queries
 
 ## How to use
@@ -172,6 +172,8 @@ const mapDispatchToProps = dispatch => ({
   // dispatch these to load data and register query
   retrieveCollectionData: () => dispatch(actions.data.retrieveCollection("collectionName")),
   retrieveQueryData: () => dispatch(actions.data.retrieveQuery("queryName", exampleFirestoreQuery)),
+  subscribeCollectionData: () => dispatch(actions.data.subscribeCollection("collectionName")),
+  subscribeQueryData: () => dispatch(actions.data.subscribeQuery("queryName", exampleFirestoreQuery)),
   addItem: (values) => dispatch(actions.data.addItem("collectionOrQueryName", values)),
   updateItem: (values) => dispatch(actions.data.updateItem("collectionOrQueryName", values)),
   updateItemWhichIsDocRef: (values) => dispatch(actions.data.updateItemDoc("collectionOrQueryName", values)),
@@ -221,4 +223,4 @@ But I am thinking about this and hopefully support will come soon.
 - does general firestore to object mapping work?
 - create/update/delete callbacks? (in Pyrodux index class, or params to dispatches?)
   - supply redux-actions to pyrodux-action which will be dispatched?
-- implement subscribe to collection changes (just as function? or also as redux-thunk action?
+- add/update of subscriptions will be handled twice (onsnapshot-handling *and* add().then()). is this okay?
