@@ -5,7 +5,7 @@ import {
 } from './mappingHelpers';
 import { determineQueryType } from './helpers';
 import { getQueryState } from './selectorHelpers';
-import internalActions from './internalActions';
+import * as internalActions from './internalActions';
 
 const getQueryAsCollectionOrDoc = (collectionOrQueryName, state) => {
   const firestore = pyrodux.getFirestore();
@@ -169,7 +169,12 @@ export const deleteItem = (collectionOrQueryName, id) => (
   getState
 ) => {
   const query = getQueryAsCollectionOrDoc(collectionOrQueryName, getState());
-  return query.doc(id).delete(); // TODO handle state
+  return query
+    .doc(id)
+    .delete()
+    .then(() =>
+      dispatch(internalActions.removeDocument(collectionOrQueryName, id))
+    );
 };
 
 export const unloadCollectionOrQuery = collectionOrQueryName => dispatch => {

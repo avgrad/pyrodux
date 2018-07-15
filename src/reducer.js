@@ -56,6 +56,13 @@ const queryReducer = (state = initialState_Query, action) => {
           ...action.data
         }
       };
+    case '@pyrodux_REMOVE_DOCUMENT':
+      const newData = { ...state.data };
+      delete newData[action.id];
+      return {
+        ...state,
+        data: newData
+      };
     default:
       return state;
   }
@@ -70,6 +77,7 @@ const dataReducer = (state = initialState_Data, action) => {
     case '@pyrodux_SET_LOADING':
     case '@pyrodux_RECEIVE_QUERY_DATA':
     case '@pyrodux_PATCH_QUERY_DATA':
+    case '@pyrodux_REMOVE_DOCUMENT':
       const queryState = state[action.collectionOrQueryName];
       return {
         ...state,

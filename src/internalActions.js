@@ -20,6 +20,12 @@ export const setDocumentData = (collectionOrQueryName, id, data) => ({
   }
 });
 
+export const removeDocument = (collectionOrQueryName, id) => ({
+  type: '@pyrodux_REMOVE_DOCUMENT',
+  collectionOrQueryName,
+  id
+});
+
 export const setLoading = (collectionOrQueryName, isLoading) => ({
   type: '@pyrodux_SET_LOADING',
   collectionOrQueryName,
@@ -42,12 +48,3 @@ export const registerQuery = (
   path: getQueryPath(query),
   subscribed
 });
-
-export default {
-  registerQuery,
-  receiveQueryData,
-  patchQueryData,
-  setDocumentData,
-  setLoading,
-  setAuthUser
-};

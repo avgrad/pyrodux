@@ -25,7 +25,9 @@ class DemoIndex extends React.Component {
             Messages (loading: {this.props.messagesLoading.toString()})
             <ul>
                 {this.props.messages.map((m,i) =>
-                    <li key={i}>{moment(m.datetime).format()} - {m.text}</li>
+                    <li key={i}>
+                        {moment(m.datetime).format()} - {m.text} (<a href="#" onClick={this.props.deleteMessage(m.id)}>delete</a>)
+                    </li>
                 )}
             </ul>
 
@@ -44,6 +46,7 @@ export default connect(
     }),
     dispatch => ({
         loadMessages: () => dispatch(actions.data.retrieveCollection("messages")),
-        unloadMessages: () => dispatch(actions.data.unloadCollectionOrQuery("messages"))
+        unloadMessages: () => dispatch(actions.data.unloadCollectionOrQuery("messages")),
+        deleteMessage: (id) => () => dispatch(actions.data.deleteItem("messages", id)),
     })
 )(DemoIndex);

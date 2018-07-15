@@ -1,5 +1,5 @@
 import pyrodux from './';
-import internalActions from './internalActions';
+import * as internalActions from './internalActions';
 
 /**
  * @param {string} email - E-Mail address to log in.

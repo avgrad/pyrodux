@@ -219,7 +219,6 @@ But I am thinking about this and hopefully support will come soon.
   - and how could this be done with subscriptions????? because you cant "edit" a subscribed query
   - only accept collectionreference and documentreference, and use supplied "callback"-style filter function??
 - does general firestore to object mapping work?
-- put docRef / collectionRef in state?
 - create/update/delete callbacks? (in Pyrodux index class, or params to dispatches?)
   - supply redux-actions to pyrodux-action which will be dispatched?
 - implement subscribe to collection changes (just as function? or also as redux-thunk action?
