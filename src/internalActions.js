@@ -1,3 +1,5 @@
+import { determineQueryType, getQueryPath } from './helpers';
+
 export const receiveQueryData = (collectionOrQueryName, data) => ({
   type: '@pyrodux_RECEIVE_QUERY_DATA',
   collectionOrQueryName,
@@ -29,7 +31,20 @@ export const setAuthUser = authUser => ({
   authUser
 });
 
+export const registerQuery = (
+  collectionOrQueryName,
+  query,
+  subscribed = false
+) => ({
+  type: '@pyrodux_REGISTER_QUERY',
+  collectionOrQueryName,
+  queryType: determineQueryType(query),
+  path: getQueryPath(query),
+  subscribed
+});
+
 export default {
+  registerQuery,
   receiveQueryData,
   patchQueryData,
   setDocumentData,

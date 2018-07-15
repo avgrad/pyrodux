@@ -6,7 +6,6 @@ import reducer from './reducer';
 import { setAuthUser } from './internalActions';
 
 class Pyrodux {
-  queries = {};
   stateKey = null;
 
   initializeApp(config) {
@@ -47,17 +46,6 @@ class Pyrodux {
   getReducer(stateKey = 'entities') {
     this.stateKey = stateKey;
     return reducer;
-  }
-
-  registerQuery(queryName, query) {
-    if (Object.keys(this.queries).includes(queryName)) {
-      throw new Error('query name already exists');
-    }
-    this.queries[queryName] = query;
-  }
-
-  unregisterQuery(queryName) {
-    delete this.queries[queryName];
   }
 
   onErrorRethrowAction = null;

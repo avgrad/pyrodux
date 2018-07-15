@@ -34,10 +34,9 @@ const queryReducer = (state = initialState_Query, action) => {
     case '@pyrodux_REGISTER_QUERY':
       return {
         ...state,
-        loading: true, // overrides initialState
-        type: action.type, // TODO
-        path: action.path, // TODO
-        subscribed: action.subscribed // TODO
+        type: action.queryType,
+        path: action.path,
+        subscribed: action.subscribed
       };
     case '@pyrodux_SET_LOADING':
       return {
@@ -76,7 +75,7 @@ const dataReducer = (state = initialState_Data, action) => {
         ...state,
         [action.collectionOrQueryName]: queryReducer(queryState, action)
       };
-    case '@pyrodux_UNLOAD_QUERY': // TODO refactor rename 'UNREGISTER_QUERY'
+    case '@pyrodux_UNREGISTER_QUERY':
       const newState = { ...state };
       delete newState[action.collectionOrQueryName]; // TODO is there a better way to remove key-value-pair?
       return newState;

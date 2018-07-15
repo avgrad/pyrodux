@@ -1,13 +1,4 @@
-import pyrodux from './';
-
-const getPyroduxState = state => {
-  return state[pyrodux.stateKey];
-};
-
-const getQueryState = (collectionOrQueryName, state) => {
-  const queryState = getPyroduxState(state).queries[collectionOrQueryName];
-  return queryState;
-};
+import { getPyroduxState, getQueryState } from './selectorHelpers';
 
 export const asObject = (collectionOrQueryName, state) => {
   const queryState = getQueryState(collectionOrQueryName, state);

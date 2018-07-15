@@ -3,41 +3,28 @@ import {
   mapFirestoreSnapshotToJsObject,
   mapJsObjectToFirestoreDocument
 } from './mappingHelpers';
+import { determineQueryType } from './helpers';
+import { getQueryState } from './selectorHelpers';
 import internalActions from './internalActions';
 
-// returns one of ["query", "collection", "doc"]
-const determineQueryType = query => {
-  switch (query.constructor.name) {
-    case 'DocumentReference':
-      return 'doc';
-    case 'CollectionReference':
-      return 'collection';
-    case 'Query$$1':
-      return 'query';
-    default:
-      throw new Error('unsupported query type for this action');
-  }
-};
-
-const getQueryAsCollection = collectionOrQueryName => {
+const getQueryAsCollectionOrDoc = (collectionOrQueryName, state) => {
   const firestore = pyrodux.getFirestore();
-  const query = pyrodux.queries[collectionOrQueryName];
-  if (!query) {
+  const queryState = getQueryState(collectionOrQueryName, state);
+
+  if (!queryState) {
     throw new Error('query with name ' + collectionOrQueryName + ' not found');
   }
 
-  const queryType = determineQueryType(query);
-  if (queryType === 'doc') {
-    // TODO what to do when query goes directly for document?
-    throw new Error('query is document!');
-  } else if (queryType === 'collection') {
-    // query is actually collection by itself
-    return query;
-  } else if (queryType === 'query') {
-    const path = query._query.path.toString();
-    return firestore.collection(path);
-  } else {
-    throw new Error('unsupported query type for this action');
+  switch (queryState.type) {
+    case 'doc':
+      return firestore.doc(queryState.path);
+    case 'collection':
+    case 'query':
+      return firestore.collection(queryState.path);
+    default:
+      throw new Error(
+        'unsupported query type for this action (' + queryState.type + ')'
+      );
   }
 };
 
@@ -49,9 +36,10 @@ export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
   if (isQueryNameKnown(queryName, getState())) {
     throw new Error('a query with this name is already registered', queryName);
   }
-  pyrodux.registerQuery(queryName, query);
 
+  dispatch(internalActions.registerQuery(queryName, query));
   dispatch(internalActions.setLoading(queryName, true));
+
   //console.log("query", query);
   //console.log("queryid", query._query.toString());
   return query
@@ -66,9 +54,12 @@ export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
 const retrieveMoreForQuery = (
   collectionOrQueryName,
   queryFilterApplicator = q => q
-) => dispatch => {
+) => (dispatch, getState) => {
   // TODO export and test
-  const collection = getQueryAsCollection(collectionOrQueryName);
+  const collection = getQueryAsCollectionOrDoc(
+    collectionOrQueryName,
+    getState()
+  );
   const moreQuery = queryFilterApplicator(collection);
 
   dispatch(internalActions.setLoading(collectionOrQueryName, true));
@@ -100,8 +91,11 @@ export const subscribeCollection = collectionName => dispatch => {
   // TODO
 };
 
-export const addItem = (collectionOrQueryName, data) => dispatch => {
-  const query = getQueryAsCollection(collectionOrQueryName);
+export const addItem = (collectionOrQueryName, data) => (
+  dispatch,
+  getState
+) => {
+  const query = getQueryAsCollectionOrDoc(collectionOrQueryName, getState());
 
   const submitData = mapJsObjectToFirestoreDocument(data);
   return query
@@ -122,8 +116,11 @@ export const addItem = (collectionOrQueryName, data) => dispatch => {
     .catch(err => pyrodux.tryRethrowError(err));
 };
 
-export const updateItem = (collectionOrQueryName, id, data) => dispatch => {
-  const query = getQueryAsCollection(collectionOrQueryName);
+export const updateItem = (collectionOrQueryName, id, data) => (
+  dispatch,
+  getState
+) => {
+  const query = getQueryAsCollectionOrDoc(collectionOrQueryName, getState());
 
   const submitData = mapJsObjectToFirestoreDocument(data);
   return query
@@ -145,24 +142,20 @@ export const updateItem = (collectionOrQueryName, id, data) => dispatch => {
     .catch(err => pyrodux.tryRethrowError(err));
 };
 
-export const updateItemDoc = (queryName, data) => dispatch => {
-  const query = pyrodux.queries[queryName];
-  if (!query) {
-    throw new Error('query with name ' + queryName + ' not found');
-  }
-
-  const queryType = determineQueryType(query);
+export const updateItemDoc = (queryName, data) => (dispatch, getState) => {
+  const docRef = getQueryAsCollectionOrDoc(queryName, getState());
+  const queryType = determineQueryType(docRef);
   if (queryType !== 'doc') {
     throw new Error('query for update item as doc is not a doc reference');
   }
 
   const submitData = mapJsObjectToFirestoreDocument(data);
-  return query
+  return docRef
     .update(submitData) // or set? update does not work if json-field is "removed"
     .then(() => {
       return {
         ...data,
-        id: query.id
+        id: docRef.id
       };
     })
     .then(data => {
@@ -171,15 +164,17 @@ export const updateItemDoc = (queryName, data) => dispatch => {
     .catch(err => pyrodux.tryRethrowError(err));
 };
 
-export const deleteItem = (collectionOrQueryName, id) => dispatch => {
-  const query = getQueryAsCollection(collectionOrQueryName);
-  return query.doc(id).delete();
+export const deleteItem = (collectionOrQueryName, id) => (
+  dispatch,
+  getState
+) => {
+  const query = getQueryAsCollectionOrDoc(collectionOrQueryName, getState());
+  return query.doc(id).delete(); // TODO handle state
 };
 
 export const unloadCollectionOrQuery = collectionOrQueryName => dispatch => {
-  pyrodux.unregisterQuery(collectionOrQueryName);
   dispatch({
-    type: '@pyrodux_UNLOAD_QUERY',
+    type: '@pyrodux_UNREGISTER_QUERY',
     collectionOrQueryName
   });
 };
