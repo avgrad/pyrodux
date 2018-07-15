@@ -100,14 +100,14 @@ const authReducer = (state = initialState_Auth, action) => {
   // auth level // state.pyrodux.auth
   switch (action.type) {
     case '@pyrodux_SET_AUTH_USER':
-      if (!!action.authUser)
+      if (action.loggedIn)
         return {
           didAuthRun: true,
-          uid: action.authUser.uid,
-          email: action.authUser.email,
-          displayName: action.authUser.displayName,
-          photoUrl: action.authUser.photoURL,
-          emailVerified: action.authUser.emailVerified
+          uid: action.uid,
+          email: action.email,
+          displayName: action.displayName,
+          photoUrl: action.photoURL,
+          emailVerified: action.emailVerified
         };
       return {
         didAuthRun: true
