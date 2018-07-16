@@ -111,7 +111,8 @@ export const subscribeQuery = (queryName, query) => (dispatch, getState) => {
     dispatch(internalActions.setLoading(queryName, false));
   });
 
-  // TODO what to do with unsubscribe function?
+  // register in pyrodux instance, to be able to unsubscribe on unregisterQuery()
+  pyrodux.registerSubscription(queryName, unsubscribe);
 };
 
 export const subscribeCollection = collectionName => {
@@ -203,6 +204,8 @@ export const deleteItem = (collectionOrQueryName, id) => (
 };
 
 export const unloadCollectionOrQuery = collectionOrQueryName => dispatch => {
+  // pyrodux will unsubscribe subscription
+  pyrodux.unregisterSubscription(collectionOrQueryName);
   dispatch({
     type: '@pyrodux_UNREGISTER_QUERY',
     collectionOrQueryName

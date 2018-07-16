@@ -7,6 +7,7 @@ import { setAuthUser } from './internalActions';
 
 class Pyrodux {
   stateKey = null;
+  subscriptions = {};
 
   initializeApp(config) {
     return firebase.initializeApp(config);
@@ -46,6 +47,21 @@ class Pyrodux {
   getReducer(stateKey = 'entities') {
     this.stateKey = stateKey;
     return reducer;
+  }
+
+  registerSubscription(queryName, unsubscribeFn) {
+    if (queryName in this.subscriptions) {
+      throw new Error('query is already subscribed to');
+    }
+    this.subscriptions[queryName] = { unsubscribe: unsubscribeFn };
+  }
+
+  unregisterSubscription(queryName) {
+    if (queryName in this.subscriptions) {
+      const query = this.subscriptions[queryName];
+      query.unsubscribe();
+      delete this.subscriptions[queryName];
+    }
   }
 
   onErrorRethrowAction = null;
