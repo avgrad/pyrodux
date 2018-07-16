@@ -41,9 +41,13 @@ export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
   return query
     .get()
     .then(mapFirestoreSnapshotToJsObject)
-    .then(data => dispatch(internalActions.setQueryData(queryName, data)))
+    .then(data => {
+      if (isQueryNameKnown(queryName, getState()))
+        dispatch(internalActions.setQueryData(queryName, data));
+    })
     .finally(() => {
-      return dispatch(internalActions.setLoading(queryName, false));
+      if (isQueryNameKnown(queryName, getState()))
+        dispatch(internalActions.setLoading(queryName, false));
     });
 };
 
@@ -98,11 +102,13 @@ export const subscribeQuery = (queryName, query) => (dispatch, getState) => {
           )
           .map(mapFirestoreDocumentChangeToJsObject)
       );
-      dispatch(internalActions.patchQueryData(queryName, dataAddedOrChanged));
+      if (isQueryNameKnown(queryName, getState()))
+        dispatch(internalActions.patchQueryData(queryName, dataAddedOrChanged));
     } else {
       // document snapshot
       const newDocumentData = mapFirestoreSnapshotToJsObject(querySnapshot);
-      dispatch(internalActions.setQueryData(queryName, newDocumentData));
+      if (isQueryNameKnown(queryName, getState()))
+        dispatch(internalActions.setQueryData(queryName, newDocumentData));
     }
     // TODO adds/changes will be pushed to state twice (also in add().then() and update().then())
     // or is it okay to create patch-action twice?
