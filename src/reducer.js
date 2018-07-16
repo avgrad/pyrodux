@@ -80,6 +80,7 @@ const dataReducer = (state = initialState_Data, action) => {
   // data level // state.pyrodux.queries
   switch (action.type) {
     case '@pyrodux_REGISTER_QUERY':
+    case '@pyrodux_REGISTER_QUERYSTRING':
     case '@pyrodux_SET_LOADING':
     case '@pyrodux_SET_QUERY_DATA':
     case '@pyrodux_PATCH_QUERY_DATA':
