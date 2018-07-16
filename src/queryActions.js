@@ -31,24 +31,51 @@ const getQueryAsCollectionOrDoc = (collectionOrQueryName, state) => {
 };
 
 export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
-  if (isQueryNameKnown(queryName, getState())) {
-    throw new Error('a query with this name is already registered', queryName);
+  var queryState = getQueryState(queryName, getState());
+  const queryType = determineQueryType(query);
+  if (!queryState) {
+    dispatch(internalActions.registerQuery(queryName, query));
+    queryState = getQueryState(queryName, getState());
+  } else if (queryType === 'doc') {
+    // TODO decide what to do with docref-queries on second retrieve
   }
 
-  dispatch(internalActions.registerQuery(queryName, query));
+  if (queryType === 'query' || queryType === 'collection') {
+    const queryString = query._query.toString();
+    const queryPath = query._query.path.toString();
+
+    if (queryState.path !== queryPath) {
+      throw new Error(
+        'query path must be the same as before.',
+        queryState.path,
+        queryPath
+      );
+    }
+
+    if (queryState.knownQueries.includes(queryString)) {
+      // query data is already loaded into state
+      return null;
+    }
+
+    dispatch(internalActions.registerQueryString(queryName, queryString));
+  }
+
   dispatch(internalActions.setLoading(queryName, true));
 
-  return query
-    .get()
-    .then(mapFirestoreSnapshotToJsObject)
-    .then(data => {
-      if (isQueryNameKnown(queryName, getState()))
-        dispatch(internalActions.setQueryData(queryName, data));
-    })
-    .finally(() => {
-      if (isQueryNameKnown(queryName, getState()))
-        dispatch(internalActions.setLoading(queryName, false));
-    });
+  return (
+    query
+      .get()
+      .then(mapFirestoreSnapshotToJsObject)
+      .then(data => {
+        if (isQueryNameKnown(queryName, getState()))
+          dispatch(internalActions.patchQueryData(queryName, data));
+      })
+      // TODO catch? throw to previously registered callback in pyrodux-instance?
+      .finally(() => {
+        if (isQueryNameKnown(queryName, getState()))
+          dispatch(internalActions.setLoading(queryName, false));
+      })
+  );
 };
 
 const retrieveMoreForQuery = (

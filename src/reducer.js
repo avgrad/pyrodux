@@ -22,7 +22,8 @@
 
 const initialState_Query = {
   loading: false,
-  data: {}
+  data: {},
+  knownQueries: [] // only filled on queries and collections
   // type: 'collection', // 'document'
   // path: '',
   // subscribed: false
@@ -37,6 +38,11 @@ const queryReducer = (state = initialState_Query, action) => {
         type: action.queryType,
         path: action.path,
         subscribed: action.subscribed
+      };
+    case '@pyrodux_REGISTER_QUERYSTRING':
+      return {
+        ...state,
+        knownQueries: state.knownQueries.concat(action.queryString)
       };
     case '@pyrodux_SET_LOADING':
       return {

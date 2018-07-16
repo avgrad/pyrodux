@@ -53,3 +53,9 @@ export const registerQuery = (
   path: getQueryPath(query),
   subscribed
 });
+
+export const registerQueryString = (collectionOrQueryName, queryString) => ({
+  type: '@pyrodux_REGISTER_QUERYSTRING',
+  collectionOrQueryName,
+  queryString
+});

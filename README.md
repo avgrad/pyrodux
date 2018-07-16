@@ -149,10 +149,35 @@ const ConnectedComponent = connect(
     queryLoading: selectors.isLoading("customQuery", state)
   }),
   dispatch => ({
-    loadMessages: () =
-      dispatch(actions.data.retrieveQuery("customQuery"))
+    loadMessages: () =>
+      dispatch(actions.data.retrieveQuery("customQuery", query))
   })
 )(SomeComponent);
+```
+
+##### Lazy Loading
+
+You can dispatch retrieveQuery() multiple times with queries on the same collection, but different filters, to
+do something like pagination or lazy-loading.
+
+Pyrodux will put the later retrieved data in the state **additionally** to enable you to save requests.
+The downside of this is, that filtering and sorting for your view must be done locally when mapping.
+`selectors.asArray("customQuery").filter(yourFilterFunction).sort(yourSortingFunction)`
+
+```js
+const currentPageQuery = pyrodux.firestore()
+  .collection("your_collection")
+  .where("date", ">=", "2018-01-01")
+  .where("date", "<", "2018-02-01");
+const nextPageQuery = pyrodux.firestore()
+  .collection("your_collection")
+  .where("date", ">=", "2018-02-01")
+  .where("date", "<", "2018-03-01");
+
+const mapDispatchToProps = dispatch => ({
+  loadCurrentPage: () => dispatch(actions.data.retrieveQuery("customQuery", currentPageQuery)),
+  loadNextPage: () => dispatch(actions.data.retrieveQuery("customQuery", nextPageQuery))
+});
 ```
 
 ### Available actions
@@ -204,22 +229,9 @@ const mapStateToProps = state => ({
 });
 ```
 
-## What can it NOT do?
-
-Currently there is no way to use it for paged collections, which lazy load
-when the user for example navigates pages of a table.
-
-But I am thinking about this and hopefully support will come soon.
-
 # TODO
 
-- how to do something like pagination?
-  - current implementation is greedy, wants just collection/query and thats it
-  - its not thinking about pagination/lazy loading collections when needed
-  - example: load tracked entries by month, click "prev month", it will load data from prev month into state *additionaly*
-  - rough idea is implemented, but i dont know if it works like i intend
-  - and how could this be done with subscriptions????? because you cant "edit" a subscribed query
-  - only accept collectionreference and documentreference, and use supplied "callback"-style filter function??
+- how to do "retrieveMore" with subscriptions????? because you cant "edit" a subscribed query
 - does general firestore to object mapping work?
 - create/update/delete callbacks? (in Pyrodux index class, or params to dispatches?)
   - supply redux-actions to pyrodux-action which will be dispatched?
