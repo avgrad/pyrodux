@@ -86,22 +86,28 @@ export const subscribeQuery = (queryName, query) => (dispatch, getState) => {
   dispatch(internalActions.setLoading(queryName, true));
 
   const unsubscribe = query.onSnapshot(querySnapshot => {
-    // TODO how to handle single-document-queries?
-    const dataAddedOrChanged = mapCollectionArrayToObject(
-      querySnapshot
-        .docChanges() // added modified removed
-        .filter(
-          documentChange =>
-            documentChange.type === 'added' ||
-            documentChange.type === 'modified'
-        )
-        .map(mapFirestoreDocumentChangeToJsObject)
-    );
+    if (typeof querySnapshot.docChanges === 'function') {
+      // querysnapshot, enumerable
+      const dataAddedOrChanged = mapCollectionArrayToObject(
+        querySnapshot
+          .docChanges() // added modified removed
+          .filter(
+            documentChange =>
+              documentChange.type === 'added' ||
+              documentChange.type === 'modified'
+          )
+          .map(mapFirestoreDocumentChangeToJsObject)
+      );
+      dispatch(internalActions.patchQueryData(queryName, dataAddedOrChanged));
+    } else {
+      // document snapshot
+      const newDocumentData = mapFirestoreSnapshotToJsObject(querySnapshot);
+      dispatch(internalActions.setQueryData(queryName, newDocumentData));
+    }
     // TODO adds/changes will be pushed to state twice (also in add().then() and update().then())
     // or is it okay to create patch-action twice?
     // TODO handle remove here? (will remove from local state because of delete().then())
 
-    dispatch(internalActions.patchQueryData(queryName, dataAddedOrChanged));
     dispatch(internalActions.setLoading(queryName, false));
   });
 

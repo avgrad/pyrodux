@@ -11,6 +11,7 @@ import DemoSubscribe from './DemoSubscribe';
 import LoginPage from './Login';
 import SignUpPage from './SignUp';
 import SingleDocPage from './SingleDoc';
+import SingleDocSubscribe from './SingleDocSubscribe';
 import LogoutButton from './LogoutButton';
 import UserState from './UserState';
 
@@ -37,6 +38,7 @@ class App extends React.Component {
               <Link to="/">Index</Link>
               <Link to="/singledoc">Single Doc</Link>
               <Link to="/subscribe">Subscribe Collection</Link>
+              <Link to="/singledocsubscribe">Single Doc Subscribe</Link>
               <span>||| </span>
               <Link to="/login">Login</Link>
               <Link to="/signup">Sign Up</Link>
@@ -49,6 +51,7 @@ class App extends React.Component {
               <Route exact path="/signup" component={SignUpPage} />
               <Route exact path="/singledoc" component={SingleDocPage} />
               <Route exact path="/subscribe" component={DemoSubscribe} />
+              <Route exact path="/singledocsubscribe" component={SingleDocSubscribe} />
               <Route exact path="/" component={DemoIndex} />
             </Switch>
           </div>
