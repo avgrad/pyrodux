@@ -6,7 +6,7 @@ import {
   mapFirestoreDocumentChangeToJsObject
 } from './mappingHelpers';
 import { determineQueryType } from './helpers';
-import { getQueryState } from './selectorHelpers';
+import { getQueryState, isQueryNameKnown } from './selectorHelpers';
 import * as internalActions from './internalActions';
 
 const getQueryAsCollectionOrDoc = (collectionOrQueryName, state) => {
@@ -28,10 +28,6 @@ const getQueryAsCollectionOrDoc = (collectionOrQueryName, state) => {
         'unsupported query type for this action (' + queryState.type + ')'
       );
   }
-};
-
-const isQueryNameKnown = (collectionOrQueryName, state) => {
-  return collectionOrQueryName in state[pyrodux.stateKey].queries;
 };
 
 export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
