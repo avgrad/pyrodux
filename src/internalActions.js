@@ -1,7 +1,7 @@
 import { determineQueryType, getQueryPath } from './helpers';
 
-export const receiveQueryData = (collectionOrQueryName, data) => ({
-  type: '@pyrodux_RECEIVE_QUERY_DATA',
+export const setQueryData = (collectionOrQueryName, data) => ({
+  type: '@pyrodux_SET_QUERY_DATA',
   collectionOrQueryName,
   data
 });

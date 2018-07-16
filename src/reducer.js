@@ -43,7 +43,7 @@ const queryReducer = (state = initialState_Query, action) => {
         ...state,
         loading: action.isLoading === true
       };
-    case '@pyrodux_RECEIVE_QUERY_DATA':
+    case '@pyrodux_SET_QUERY_DATA':
       return {
         ...state,
         data: action.data
@@ -75,7 +75,7 @@ const dataReducer = (state = initialState_Data, action) => {
   switch (action.type) {
     case '@pyrodux_REGISTER_QUERY':
     case '@pyrodux_SET_LOADING':
-    case '@pyrodux_RECEIVE_QUERY_DATA':
+    case '@pyrodux_SET_QUERY_DATA':
     case '@pyrodux_PATCH_QUERY_DATA':
     case '@pyrodux_REMOVE_DOCUMENT':
       const queryState = state[action.collectionOrQueryName];

@@ -45,7 +45,7 @@ export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
   return query
     .get()
     .then(mapFirestoreSnapshotToJsObject)
-    .then(data => dispatch(internalActions.receiveQueryData(queryName, data)))
+    .then(data => dispatch(internalActions.setQueryData(queryName, data)))
     .finally(() => {
       return dispatch(internalActions.setLoading(queryName, false));
     });
@@ -182,7 +182,7 @@ export const updateItemDoc = (queryName, data) => (dispatch, getState) => {
       };
     })
     .then(data => {
-      dispatch(internalActions.receiveQueryData(queryName, data));
+      dispatch(internalActions.setQueryData(queryName, data));
     })
     .catch(err => pyrodux.tryRethrowError(err));
 };
