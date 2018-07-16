@@ -3,14 +3,11 @@
 Pyrodux is a set of general redux actions to use the Firebase Firestore inside your react app.
 It helps you to focus on the main parts of you app instead of data-handling the collections, queries and redux-state.
 
-## NPM Scripts
+## Installation
 
-- `build` -> build to `./build`
-- `watch` -> watch for file changes, and build to `./build`
-- `release` -> `npm publish build`
-- `dev-init` -> install pyrodux dependencies, and install playground dependencies
-- `playground:start` -> run playground app locally
-- `dev-playground` -> watch for file changes to build pyrodux, and run playground locally
+```
+npm install pyrodux
+```
 
 ## Prerequisites
 
@@ -228,6 +225,15 @@ const mapStateToProps = state => ({
   userId: selectors.userId(state, "user not logged in (argument optional)")
 });
 ```
+
+## NPM Scripts
+
+- `build` -> build to `./build`
+- `watch` -> watch for file changes, and build to `./build`
+- `release` -> `npm publish build`
+- `dev-init` -> install pyrodux dependencies, and install playground dependencies
+- `playground:start` -> run playground app locally
+- `dev-playground` -> watch for file changes to build pyrodux, and run playground locally
 
 # TODO
 
