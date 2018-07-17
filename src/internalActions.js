@@ -35,11 +35,15 @@ export const setLoading = (collectionOrQueryName, isLoading) => ({
 export const setAuthUser = authUser => ({
   type: '@pyrodux_SET_AUTH_USER',
   loggedIn: !!authUser,
-  uid: authUser.uid,
-  email: authUser.email,
-  displayName: authUser.displayName,
-  photoUrl: authUser.photoURL,
-  emailVerified: authUser.emailVerified
+  ...(!!authUser // add these properties to the action, if user is not null
+    ? {
+        uid: authUser.uid,
+        email: authUser.email,
+        displayName: authUser.displayName,
+        photoUrl: authUser.photoURL,
+        emailVerified: authUser.emailVerified
+      }
+    : {}) // if user is null, add no additional properties to the action
 });
 
 export const registerQuery = (
