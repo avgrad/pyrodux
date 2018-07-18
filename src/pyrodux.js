@@ -21,22 +21,6 @@ class Pyrodux {
     return firebase.firestore();
   }
 
-  getFirestore() {
-    if (firebase.apps.length > 0) {
-      if (!firebase.firestore) throw new Error('firestore not imported');
-      return firebase.firestore();
-    }
-    throw new Error('Firebase App not initialized!');
-  }
-
-  getAuth() {
-    if (firebase.apps.length > 0) {
-      if (!firebase.auth) throw new Error('firebase auth not imported');
-      return firebase.auth();
-    }
-    throw new Error('Firebase App not initialized!');
-  }
-
   createOnAuthChangedHandler(store) {
     return authUser => {
       console.log('auth state changed handled by pyrodux', authUser);

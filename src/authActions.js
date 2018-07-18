@@ -6,7 +6,7 @@ import * as internalActions from './internalActions';
  * @param {string} password - Password to use to log in
  */
 export const doLoginWithEmailPassword = (email, password) => dispatch => {
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth
     .signInWithEmailAndPassword(email, password)
     .then(authUser => dispatch(internalActions.setAuthUser(authUser)))
@@ -14,7 +14,7 @@ export const doLoginWithEmailPassword = (email, password) => dispatch => {
 };
 
 export const doLogout = () => dispatch => {
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth.signOut();
 };
 
@@ -23,7 +23,7 @@ export const doLogout = () => dispatch => {
  * @param {string} password - Password to be used for the new account
  */
 export const doSignUpWithEmailPassword = (email, password) => dispatch => {
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth
     .createUserWithEmailAndPassword(email, password)
     .catch(err => pyrodux.tryRethrowError(err));
@@ -42,7 +42,7 @@ const doSendPasswordResetEmail = (
   actionCodeSettings
 ) => dispatch => {
   // TODO export
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth
     .sendPasswordResetEmail(email, actionCodeSettings)
     .then(() => {
@@ -60,7 +60,7 @@ const doSendPasswordResetEmail = (
  */
 const doConfirmPasswordResetEmail = (code, newPassword) => dispatch => {
   // TODO export
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   auth
     .confirmPasswordReset(code, newPassword)
     .catch(err => pyrodux.tryRethrowError(err));
@@ -68,32 +68,32 @@ const doConfirmPasswordResetEmail = (code, newPassword) => dispatch => {
 
 const updateUserProfile = (displayName, photoURL) => dispatch => {
   // TODO export
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth.currentUser.updateProfile({ displayName, photoURL });
 };
 
 const updateUserEmail = newEmail => dispatch => {
   // TODO export
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth.currentUser.updateEmail(newEmail);
 };
 
 const updateUserPassword = newPassword => dispatch => {
   // TODO export
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth.currentUser.updatePassword(newPassword);
 };
 
 const sendEmailVerification = actionCodeSettings => dispatch => {
   // TODO export
   // TODO https://firebase.google.com/docs/reference/js/firebase.User#sendEmailVerification
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth.sendEmailVerification(actionCodeSettings);
 };
 
 const applyActionCode = code => dispatch => {
   // used to complete email verification
   // TODO export
-  const auth = pyrodux.getAuth();
+  const auth = pyrodux.auth();
   return auth.applyActionCode(code);
 };

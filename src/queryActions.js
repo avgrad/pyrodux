@@ -10,7 +10,7 @@ import { getQueryState, isQueryNameKnown } from './selectorHelpers';
 import * as internalActions from './internalActions';
 
 const getQueryAsCollectionOrDoc = (collectionOrQueryName, state) => {
-  const firestore = pyrodux.getFirestore();
+  const firestore = pyrodux.firestore();
   const queryState = getQueryState(collectionOrQueryName, state);
 
   if (!queryState) {
@@ -103,7 +103,7 @@ const retrieveMoreForQuery = (
 };
 
 export const retrieveCollection = collectionName => {
-  const firestore = pyrodux.getFirestore();
+  const firestore = pyrodux.firestore();
   const query = firestore.collection(collectionName);
   return retrieveQuery(collectionName, query);
 };
@@ -149,7 +149,7 @@ export const subscribeQuery = (queryName, query) => (dispatch, getState) => {
 };
 
 export const subscribeCollection = collectionName => {
-  const firestore = pyrodux.getFirestore();
+  const firestore = pyrodux.firestore();
   const query = firestore.collection(collectionName);
   return subscribeQuery(collectionName, query);
 };
