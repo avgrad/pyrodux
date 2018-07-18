@@ -5,11 +5,11 @@ import { selectors, actions } from 'pyrodux';
 import pyrodux from 'pyrodux';
 import MessageSender from './MessageSender';
 
-const singleDocQuery = pyrodux.firestore().collection("user").doc("lqkkwwdq4Gc4WMUUcKQa1GcWSI63");
+const singleDocQuery = (uid) => pyrodux.firestore().collection("user").doc(uid);
 
 class DemoSubscribe extends React.Component {
     componentDidMount() {
-        this.props.loadDocument();
+        this.props.loadDocument(this.props.uid);
     }
 
     componentWillUnmount() {
@@ -30,9 +30,10 @@ export default connect(
     state => ({
         document: selectors.asObject("singleDocSubscribe", state),
         documentLoading: selectors.isLoading("singleDocSubscribe", state),
+        uid: selectors.userId(state)
     }),
     dispatch => ({
-        loadDocument: () => dispatch(actions.data.subscribeQuery("singleDocSubscribe", singleDocQuery)),
+        loadDocument: (uid) => dispatch(actions.data.subscribeQuery("singleDocSubscribe", singleDocQuery(uid))),
         unloadDocument: () => dispatch(actions.data.unloadCollectionOrQuery("singleDocSubscribe"))
     })
 )(DemoSubscribe);

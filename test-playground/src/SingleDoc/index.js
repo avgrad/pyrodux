@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import SingleDocForm from './Form';
 import pyrodux, { selectors, actions } from 'pyrodux';
 
-const singleDocQuery = pyrodux.firestore().collection("user").doc("lqkkwwdq4Gc4WMUUcKQa1GcWSI63");
+const singleDocQuery = (uid) => pyrodux.firestore().collection("user").doc(uid);
 
 class SingleDocPage extends React.Component {
     componentDidMount() {
-        this.props.loadData();
+        this.props.loadData(this.props.uid);
     }
 
     componentWillUnmount() {
@@ -31,10 +31,11 @@ class SingleDocPage extends React.Component {
 export default connect(
     state => ({
         isLoading: selectors.isLoading("singleDoc", state),
-        initialValues: selectors.asObject("singleDoc", state) // someSetting // otherSetting
+        initialValues: selectors.asObject("singleDoc", state), // someSetting // otherSetting
+        uid: selectors.userId(state)
     }),
     dispatch => ({
-        loadData: () => dispatch(actions.data.retrieveQuery("singleDoc", singleDocQuery)),
+        loadData: (uid) => dispatch(actions.data.retrieveQuery("singleDoc", singleDocQuery(uid))),
         handleSubmit: (values) => dispatch(actions.data.updateItemDoc("singleDoc", values)),
         unloadData: () => dispatch(actions.data.unloadCollectionOrQuery("singleDoc"))
     })
