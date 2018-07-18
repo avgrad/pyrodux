@@ -1,4 +1,4 @@
-import pyrodux from 'pyrodux';
+import pyrodux from './';
 
 export const mapFirestoreDocumentChangeToJsObject = documentChange => {
   return mapFirestoreDocumentSnapshotToJsObject(documentChange.doc);
