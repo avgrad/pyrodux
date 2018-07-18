@@ -19,6 +19,7 @@ export const mapFirestoreCollectionSnapshotToJsObject = querySnapshot => {
 };
 
 export const mapFirestoreDocumentSnapshotToJsObject = docSnapshot => {
+  if (docSnapshot.exists === false) return null;
   const fsData = docSnapshot.data();
   if ('id' in fsData)
     throw new Error("original firestore data already contains 'id' -Property");

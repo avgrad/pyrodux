@@ -210,7 +210,7 @@ export const updateItemDoc = (queryName, data) => (dispatch, getState) => {
 
   const submitData = mapJsObjectToFirestoreDocument(data);
   return docRef
-    .update(submitData) // or set? update does not work if json-field is "removed"
+    .set(submitData)
     .then(() => {
       return {
         ...data,
