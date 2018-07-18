@@ -54,7 +54,7 @@ class App extends React.Component {
               <Route exact path="/singledoc" component={SingleDocPage} />
               <Route exact path="/subscribe" component={DemoSubscribe} />
               <Route exact path="/singledocsubscribe" component={SingleDocSubscribe} />
-              <Route exact paht="/retrievemore" component={RetrieveMorePage} />
+              <Route exact path="/retrievemore" component={RetrieveMorePage} />
               <Route exact path="/" component={DemoIndex} />
             </Switch>
           </div>
