@@ -78,30 +78,6 @@ export const retrieveQuery = (queryName, query) => (dispatch, getState) => {
   );
 };
 
-const retrieveMoreForQuery = (
-  collectionOrQueryName,
-  queryFilterApplicator = q => q
-) => (dispatch, getState) => {
-  // TODO export and test
-  const collection = getQueryAsCollectionOrDoc(
-    collectionOrQueryName,
-    getState()
-  );
-  const moreQuery = queryFilterApplicator(collection);
-
-  dispatch(internalActions.setLoading(collectionOrQueryName, true));
-
-  return moreQuery
-    .get()
-    .then(mapFirestoreSnapshotToJsObject)
-    .then(data =>
-      dispatch(internalActions.patchQueryData(collectionOrQueryName, data))
-    )
-    .finally(() => {
-      return dispatch(internalActions.setLoading(collectionOrQueryName, false));
-    });
-};
-
 export const retrieveCollection = collectionName => {
   const firestore = pyrodux.firestore();
   const query = firestore.collection(collectionName);
