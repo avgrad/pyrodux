@@ -4,7 +4,7 @@ import { reduxForm, Field } from 'redux-form';
 const validate = (values) => {
     const errors = {};
 
-    if(values.password && values.password === values.confirmpassword) {
+    if (values.password && values.password !== values.confirmpassword) {
         errors.password = "passwords are not identical";
         errors.confirmpassword = errors.password;
     }
