@@ -23,7 +23,6 @@ class Pyrodux {
 
   createOnAuthChangedHandler(store) {
     return authUser => {
-      console.log('auth state changed handled by pyrodux', authUser);
       store.dispatch(setAuthUser(authUser));
     };
   }
